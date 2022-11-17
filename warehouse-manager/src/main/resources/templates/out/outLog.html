@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="">
+<head>
+	<meta charset="utf-8">
+	<!--字体图标-->
+	<link href="../../javaex/pc/css/icomoon.css" rel="stylesheet" />
+	<!--动画-->
+	<link href="../../javaex/pc/css/animate.css" rel="stylesheet" />
+	<!--骨架样式-->
+	<link href="../../javaex/pc/css/common.css" rel="stylesheet" />
+	<!--皮肤（缇娜）-->
+	<link href="../../javaex/pc/css/skin/tina.css" rel="stylesheet" />
+	<!--jquery，不可修改版本-->
+	<script src="../../javaex/pc/lib/jquery-1.7.2.min.js"></script>
+	<!--全局动态修改-->
+	<script src="../../javaex/pc/js/common.js"></script>
+	<!--核心组件-->
+	<script src="../../javaex/pc/js/javaex.min.js"></script>
+	<!--表单验证-->
+	<script src="../../javaex/pc/js/javaex-formVerify.js"></script>
+	<title>出库记录</title>
+</head>
+<style>
+
+</style>
+
+<body>
+<!--全部主体内容-->
+<div class="list-content">
+	<!--块元素-->
+	<div class="block">
+		<!--页面有多个表格时，可以用于标识表格-->
+		<h2>出库记录</h2>
+		<!--右上角的返回按钮-->
+		<a href="javascript:history.back();">
+			<button class="button indigo radius-3" style="position: absolute;right: 20px;top: 16px;"><span class="icon-arrow_back"></span> 返回</button>
+		</a>
+
+		<!--正文内容-->
+		<div class="main">
+			<!--表格上方的搜索操作-->
+			<div class="admin-search">
+				<div class="input-group">
+					<input id="keyword" type="text" class="text" placeholder="提示信息" />
+					<button id="searchBtn" class="button blue" onclick="search();">搜索</button>
+				</div>
+			</div>
+
+			<table id="table" class="table color2">
+				<thead>
+				<tr align="center">
+					<th>序号</th>
+					<th>货名</th>
+					<th>数量</th>
+					<th>类型</th>
+					<th>出库时间</th>
+					<th>出库人</th>
+					<th>经办人</th>
+					<th>备注</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+			</table>
+
+			<div class="page">
+				<ul id="page" class="pagination"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	// 页面一加载, 展示数据列表, 每页10条
+	$(document).ready(function(){
+		// 默认查询所有
+		rander(1,"",10);
+	});
+
+	// 渲染数据表格
+	function rander(currPage,keyword,pageSize) {
+		// 定义全局 分页属性
+		$.ajax({
+			//请求方式
+			type : "POST",
+			//请求的媒体类型
+			contentType: "application/json;charset=UTF-8",
+			//请求地址
+			url : "/outLog/list",
+			//数据，json字符串
+			data : JSON.stringify({"currPage":currPage,"keyword": keyword,"pageSize": pageSize}),
+			//请求成功
+			success : function(result) {
+				console.log(result);
+				// 获取集合属性
+				let r = result.data;
+				let total = r.total;
+				let currPage = r.currPage;
+				let pageSize = r.pageSize;
+				// 分页信息
+				console.log("currPage:"+r.currPage+"\t pageSize:"+r.pageSize+"\t total:"+r.total);
+
+				let array = r.list;
+				let text = "";
+				$.each(array,function(index,value){
+					console.log(value);
+					let num = pageSize * (currPage - 1) + index + 1;
+					text+= "<tr align='center'><td>"+num+"</td><td>"+value.name+"</td><td>"+ value.outSize+ "</td><td>"+ value.type + "</td><td>"+ value.outTime +
+							"</td><td>"+value.outUser + "</td><td>"+value.confirmUser + "</td><td>"+ value.memo + "</td><td>" +
+							"<button class='button yellow empty' onclick='delRecord("+value.id+")'>删除</button></td></tr>";
+				});
+
+				$("#tbody").html(text);
+
+				// 向上取整去总页数
+				let totalPage = Math.ceil(total/pageSize);
+				console.log("totalPage:"+totalPage);
+				// 清空分页组件
+				$("#page").empty();
+				// 调用分页组件
+				javaex.page({
+					id : "page",
+					pageCount : totalPage,	// 总页数
+					currentPage : currPage,// 默认选中第几页
+					perPageCount : pageSize ,	// 每页显示多少条，不填时，不显示该条数选择控件
+					isShowJumpPage : false,	// 是否显示跳页
+					totalNum : total,		// 总条数，不填时，不显示
+					position : "center",
+					callback : function(rtn) {
+						// 翻页
+						rander(rtn.pageNum,keyword,rtn.perPageCount);
+					}
+				});
+			},
+			//请求失败，包含具体的错误信息
+			error : function(e){
+				console.log(e.status);
+				console.log(e.responseText);
+			}
+		});
+	}
+
+	// 搜索
+	function search() {
+		// 获取搜索关键字
+		let keyword = $("#keyword").val();
+		// 搜索结果渲染表格
+		rander(1,keyword,10);
+	}
+
+	// 删除
+	function delRecord(id) {
+		console.log("delete Record"+id);
+		javaex.confirm({
+			content : "确定要删除么",
+			callback : "delCallback("+id+")"
+		});
+	}
+
+	function delCallback(id) {
+		// ajax
+		$.get("/outLog/del",{"id": id},
+				function(data){
+					var code = data.code;
+					if (code == 200) {
+						javaex.message({
+							content : "删除成功",
+							type : "success"
+						});
+
+						// 删除成功, 刷新页面
+						setTimeout(function(){ window.location.reload();},1500)
+					}
+				});
+		// 如果你想阻止弹出层关闭，直接 return false; 即可
+		//return false;
+	}
+
+    // 当天时间
+    var currentDate = dateFormat("YYYY-mm-dd",new Date());
+
+	javaex.date({
+		id : "date2",		// 承载日期组件的id
+		isTime: true,
+		date : currentDate,	// 开始日期
+		// 重新选择日期之后返回一个时间对象
+		callback : function(rtn) {
+		}
+	});
+
+    // 日期格式化
+    function dateFormat(fmt, date) {
+        var ret;
+        var opt = {
+            "Y+": date.getFullYear().toString(),        // 年
+            "m+": (date.getMonth() + 1).toString(),     // 月
+            "d+": date.getDate().toString(),            // 日
+            // "H+": date.getHours().toString(),           // 时
+            // "M+": date.getMinutes().toString(),         // 分
+            // "S+": date.getSeconds().toString()          // 秒
+            // 有其他格式化字符需求可以继续添加，必须转化成字符串
+        };
+        for (var k in opt) {
+            ret = new RegExp("(" + k + ")").exec(fmt);
+            if (ret) {
+                fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+            }
+        }
+        return fmt;
+    }
+
+</script>
+</body>
+</html>
