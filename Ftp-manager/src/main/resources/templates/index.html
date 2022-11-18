@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FTP</title>
+</head>
+<body>
+    <input id="cm_file" type="file" name="upFileName">
+
+    <script>
+
+        let formData = new FormData();
+        let cm_uploadFile = $('#cm_file',cmwes_page).get(0).files[0];//获取文件，这里cmwes_page可以不要，这是用来规定范围的
+
+        formData.append("file",cm_uploadFile);
+        $.ajax({
+            url: '${rc.getContextPath()}/manage/cmWesData/saveCmWesData',
+            type: 'POST',
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+
+        }).fail(function(res) {
+
+        });
+
+    </script>
+</body>
+
+</html>
