@@ -28,7 +28,7 @@ public class OutLog implements Serializable {
       @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String name;
+    private String goodsName;
 
     private Integer goodsId;
 

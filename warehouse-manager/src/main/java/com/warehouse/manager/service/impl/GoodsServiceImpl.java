@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.warehouse.manager.entity.Goods;
 import com.warehouse.manager.mapper.GoodsMapper;
-import com.warehouse.manager.repos.GoodsRepository;
 import com.warehouse.manager.service.IGoodsService;
 import com.warehouse.manager.util.ro.PageIn;
 import com.warehouse.manager.util.vo.GoodsOut;
@@ -33,9 +32,6 @@ import java.util.Optional;
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements IGoodsService {
 
     @Autowired
-    private GoodsRepository goodsRepository;
-
-    @Autowired
     private GoodsMapper goodsMapper;
 
     @Autowired
@@ -55,7 +51,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         Integer pageSize = pageIn.getPageSize();
         IPage<Goods> page = new Page<>(pageNo, pageSize);
         QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
-        queryWrapper.and(wrapper -> wrapper.like("name", pageIn.getKeyword()).or().like("type", pageIn.getKeyword()));
+        queryWrapper.and(wrapper -> wrapper.like("goods_name", pageIn.getKeyword()).or().like("type", pageIn.getKeyword()));
         Goods goods = new Goods();
         queryWrapper.setEntity(goods);
 

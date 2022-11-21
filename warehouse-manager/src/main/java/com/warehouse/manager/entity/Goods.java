@@ -21,7 +21,6 @@ import javax.persistence.Id;
  * @author lemndo
  * @since 2022-09-16
  */
-@Entity
 @Data
 @TableName("c_goods")
 @ApiModel(value = "Goods对象", description = "")
@@ -29,12 +28,12 @@ public class Goods implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("货物名")
     @ExcelProperty("货名")
-    private String name;
+    private String goodsName;
 
     @ApiModelProperty("库存")
     @ExcelProperty("库存")
@@ -55,48 +54,4 @@ public class Goods implements Serializable {
     @ApiModelProperty("上次更新时间")
     @ExcelProperty("更新时间")
     private String lastTime;
-
-
-    @Id
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    public String getTranslate() {
-        return translate;
-    }
-
-    public void setTranslate(String translate) {
-        this.translate = translate;
-    }
-
-    public String getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(String lastTime) {
-        this.lastTime = lastTime;
-    }
-
-
 }

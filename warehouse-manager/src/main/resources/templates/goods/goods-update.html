@@ -31,7 +31,7 @@
 	<div class="block">
 		<!--修饰块元素名称-->
 		<div class="banner">
-			<p class="tab fixed">编辑图书</p>
+			<p class="tab fixed">编辑货物</p>
 		</div>
 
 		<!--正文内容-->
@@ -41,7 +41,7 @@
 				<div class="unit clear">
 					<div class="left"><span class="required">*</span><p class="subtitle">货物名</p></div>
 					<div class="right">
-						<input type="text" id="bookName" class="text" placeholder="请输入货物名称" />
+						<input type="text" id="goodsName" class="text" placeholder="请输入货物名称" />
 					</div>
 				</div>
 
@@ -116,7 +116,7 @@
             var data = data.data;
             console.log(data);
             // 页面一加载, 读取登录用户信息
-            $("#bookName").val(data.name);
+            $("#goodsName").val(data.goodsName);
             $("#lastTime").val(data.lastTime);
             $("#size").val(data.size);
             $("#location").val(data.location);
@@ -215,7 +215,7 @@
 
         var id = getQueryVariable("id");
         // 表单数据
-        var json = {"id":id,"translate":translate,"size":size,"location":location,"type":select,"lastTime":lastTime};
+        var json = {"id":id, "goodsName":goodsName, "translate":translate,"size":size,"location":location,"type":select,"lastTime":lastTime};
 
         // 提交
         // ajax 示例

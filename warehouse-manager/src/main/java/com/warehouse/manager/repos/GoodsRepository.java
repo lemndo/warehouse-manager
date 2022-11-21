@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @Date 2020/7/14 16:12
  * @Author by lemndo
  */
-@Repository
-public interface GoodsRepository extends JpaRepository<Goods,Integer> {
-
-}
+//@Repository
+//public interface GoodsRepository extends JpaRepository<Goods,Integer> {
+//
+//}

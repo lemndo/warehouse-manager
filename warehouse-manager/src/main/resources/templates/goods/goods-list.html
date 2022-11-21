@@ -123,7 +123,7 @@
                 $.each(array,function(index,value){
                     console.log(value);
                    var num = pageSize * (currPage - 1) + index + 1;
-                    text+= "<tr align='center'><td>"+num+"</td><td>"+value.name+"</td><td>"+ value.size+ "</td><td>"+ value.location + "</td><td>" +value.type +
+                    text+= "<tr align='center'><td>"+num+"</td><td>"+value.goodsName+"</td><td>"+ value.size+ "</td><td>"+ value.location + "</td><td>" +value.type +
 							"</td><td>"+value.translate+"</td><td>"+value.lastTime+"</td><td>"+
                         "<button class='button blue empty' onclick='updateGoods("+value.id+")'>编辑</button> &nbsp;<button class='button yellow empty' onclick='delGoods("+value.id+")'>删除</button></td></tr>";
                 });

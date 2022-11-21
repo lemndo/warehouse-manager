@@ -13,7 +13,7 @@ public class GoodsOut {
     private Integer id;
 
     @ApiModelProperty("货物名")
-    private String name;
+    private String goodsName;
 
     @ApiModelProperty("库存")
     private Integer size;

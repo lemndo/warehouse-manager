@@ -19,7 +19,7 @@ public class OutVo {
     private Integer goodsId;
 
     @ApiModelProperty("货物名")
-    private String name;
+    private String goodsName;
 
     @ApiModelProperty("出库数量")
     private Integer outSize;

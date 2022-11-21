@@ -38,7 +38,7 @@ public class OutLogServiceImpl extends ServiceImpl<OutLogMapper, OutLog> impleme
         IPage<OutLog> page = new Page<>(pageNo, pageSize);
         QueryWrapper<OutLog> queryWrapper = new QueryWrapper<>();
         //搜素关键字，并且按照id逆序排列
-        queryWrapper.and(wrapper -> wrapper.like("name", pageIn.getKeyword()).or().like("type", pageIn.getKeyword()).or().like("out_user", pageIn.getKeyword()));
+        queryWrapper.and(wrapper -> wrapper.like("goods_name", pageIn.getKeyword()).or().like("type", pageIn.getKeyword()).or().like("out_user", pageIn.getKeyword()));
         queryWrapper.orderByDesc("id");
         OutLog outLog = new OutLog();
         queryWrapper.setEntity(outLog);

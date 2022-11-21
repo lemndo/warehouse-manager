@@ -53,7 +53,7 @@ public class OutServiceImpl extends ServiceImpl<OutMapper, Out> implements IOutS
             //增加出库记录
             OutLog outLog = new OutLog();
             outLog.setGoodsId(out.getGoodsId());
-            outLog.setName(goods.getName());
+            outLog.setGoodsName(goods.getGoodsName());
             outLog.setType(out.getType());
             outLog.setOutSize(outSize);
             outLog.setOutTime(out.getOutTime());
